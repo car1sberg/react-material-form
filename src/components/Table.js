@@ -3,6 +3,8 @@ import React from 'react';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
+import DownArrow from 'material-ui/svg-icons/navigation/arrow-downward';
+import UpArrow from 'material-ui/svg-icons/navigation/arrow-upward';
 import {
   Table,
   TableBody,
@@ -63,14 +65,22 @@ export default ({
     activeIndex, 
     startEditing, 
     handleChange, 
-    stopEditing 
+    stopEditing,
+    sortColumn,
+    sortType,
+    sortedColumn
 }) => 
   <Table>
     <TableHeader>
       <TableRow>
         {header.map((item, i) => 
             <TableHeaderColumn key={`hclm-${i}`}>
-                {item.name}
+                <div onClick={() => sortColumn(item.prop)} className="sortArrowsBlock">
+                    <span>{item.name}</span>
+                    {sortedColumn === item.prop ? (
+                        sortType === 'asc' ? <DownArrow /> : <UpArrow /> 
+                    ) : null}
+                </div>
             </TableHeaderColumn>
         )}
         <TableHeaderColumn />

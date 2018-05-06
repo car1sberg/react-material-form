@@ -5,3 +5,11 @@
 .icons svg {
   cursor: pointer;
 }
+
+.sortArrowsBlock {
+  display: flex;
+  align-items: center;
+}
+.sortArrowsBlock svg {
+  padding-left: 10px;
+}

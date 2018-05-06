@@ -1,14 +1,31 @@
 
 import React, { Component } from 'react';
 import './App.css';
+import data from './data';
 import Form from './components/Form';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Table from './components/Table';
+import _ from 'lodash';
+
+const sortDirection = {
+  asc: 'desc',
+  desc: 'asc'
+}
 
 class App extends Component {
   state = {
-    data: [],
-    activeIndex: -1
+    data,
+    activeIndex: -1,
+    sortType: 'desc',
+    sortedColumn: ''
+
+  }
+
+  handleSort = (columnName) => {
+    this.setState(state => ({
+      sortedColumn: columnName,
+      sortType: state.sortedColumn === columnName ? sortDirection[state.sortType] : 'asc'
+    }))
   }
 
   handleDelete = (i) => {
@@ -33,8 +50,8 @@ class App extends Component {
   }
 
   render() {
-    const { data, activeIndex } = this.state;
-    
+    const { data, activeIndex, sortedColumn, sortType } = this.state;
+
     return (
       <MuiThemeProvider>
         <div className="App">
@@ -42,12 +59,15 @@ class App extends Component {
             data: [...this.state.data, submit]
           })} />
           <Table 
+            sortType={sortType}
+            sortedColumn={sortedColumn}
+            sortColumn={this.handleSort}
             activeIndex={activeIndex}
             startEditing={this.startEditing}
             handleChange={this.handleChange}
             stopEditing={this.stopEditing}
             handleDelete={this.handleDelete}
-            data={data} 
+            data={_.orderBy(data, sortedColumn, sortType )} 
             header={[
               {
                 name: 'First Name',
